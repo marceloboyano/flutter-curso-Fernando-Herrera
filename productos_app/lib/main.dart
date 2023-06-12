@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:productos_app/screens/screens.dart';
 import 'package:productos_app/services/services.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(const AppState());
-
 
 class AppState extends StatelessWidget {
   const AppState({super.key});
@@ -13,6 +13,7 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthService()),
         ChangeNotifierProvider(create: (_) => ProductsService())
       ],
       child: const MyApp(),
@@ -20,35 +21,32 @@ class AppState extends StatelessWidget {
   }
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Productos App',
-      initialRoute: 'home',
-      routes:{
+      initialRoute: 'login',
+      routes: {
         'login': (_) => const LoginScreen(),
-        'home':(_) => const HomeScreen(),
-          'product':(_) => const ProductScreen()
+        'register': (_) => const RegisterScreen(),
+        'home': (_) => const HomeScreen(),
+        'product': (_) => const ProductScreen(),
+        'checking': (_) => const CheckAuthScreen(),
       },
-       theme:ThemeData.light().copyWith(
-        scaffoldBackgroundColor: Colors.grey[300],
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          color: Colors.indigo,
-          centerTitle: true,
-        ),
+      scaffoldMessengerKey: NotificationsService.messengerKey,
+      theme: ThemeData.light().copyWith(
+          scaffoldBackgroundColor: Colors.grey[300],
+          appBarTheme: const AppBarTheme(
+            elevation: 0,
+            color: Colors.indigo,
+            centerTitle: true,
+          ),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
-            backgroundColor: Colors.indigo,
-            elevation: 0
-
-          )
-       ),
+              backgroundColor: Colors.indigo, elevation: 0)),
     );
-   
   }
 }

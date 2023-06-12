@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:productos_app/providers/login_form_provider.dart';
-import 'package:productos_app/services/auth_services.dart';
+import 'package:productos_app/services/services.dart';
 import 'package:productos_app/ui/input_decorations.dart';
 import 'package:productos_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-import '../services/services.dart';
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,8 @@ class LoginScreen extends StatelessWidget {
               child: Column(
             children: [
               const SizedBox(height: 20),
-              Text('Login', style: Theme.of(context).textTheme.headlineMedium),
+              Text('Crear cuenta',
+                  style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 30),
               ChangeNotifierProvider(
                   create: (_) => LoginFormProvider(),
@@ -38,7 +37,7 @@ class LoginScreen extends StatelessWidget {
                     MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
                 shape: MaterialStateProperty.all(const StadiumBorder())),
             child: const Text(
-              'Crear una nueva cuenta',
+              '¿Ya tienes una cuenta?',
               style: TextStyle(fontSize: 18, color: Colors.black87),
             ),
           ),
@@ -111,14 +110,12 @@ class _LoginForm extends StatelessWidget {
                         if (!loginForm.isValidForm()) return;
 
                         loginForm.isLoading = true;
-                        final String? errorMessage = await authService.login(
-                            loginForm.email, loginForm.password);
+                        final String? errorMessage = await authService
+                            .createUser(loginForm.email, loginForm.password);
                         if (errorMessage == null) {
                           Navigator.pushReplacementNamed(context, 'home');
                         } else {
                           print(errorMessage);
-                          NotificationsService.showSnackbar(
-                              'Usuario o Contraseña incorrectos');
                           loginForm.isLoading = false;
                         }
                       },
