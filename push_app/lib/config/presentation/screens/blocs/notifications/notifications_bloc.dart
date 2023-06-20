@@ -58,7 +58,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       
   }
 
-  void _handleRemoteMessage(RemoteMessage message){
+  void handleRemoteMessage(RemoteMessage message){
     //  print('Got a message whilst in the foreground!');
     //  print('Message data: ${message.data}');
      if (message.notification == null)  return;
@@ -77,7 +77,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   
   }
   void _onForegroundMessage(){
-    final listener = FirebaseMessaging.onMessage.listen(_handleRemoteMessage);
+    final listener = FirebaseMessaging.onMessage.listen(handleRemoteMessage);
   }
 
   void _getFCMToken() async{
@@ -102,6 +102,13 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       
    
 
+  }
+
+
+  PushMessage? getMessageById(String pushMessageId){
+    final exist = state.notificactions.any((element) => element.messageId == pushMessageId);
+    if(!exist) return null;
+    return state.notificactions.firstWhere((element) => element.messageId == pushMessageId);
   }
 
 }
